@@ -12,6 +12,14 @@
 
 ## There is 1 endpoint in the application:
 - **POST** - localhost:8080/api/cards/validate (_validate card_)
+#### Request (example):
+```sh
+{
+    "number": "4111111111111111",
+    "expirationMonth": "05",
+    "expirationYear": "2025"
+}
+```
 #### Response (error field is optional):
   ```sh
 {

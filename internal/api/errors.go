@@ -8,8 +8,10 @@ type ApiError struct {
 }
 
 func newErrorResponse(ctx *gin.Context, code int, err error) {
-	ctx.AbortWithStatusJSON(code, ApiError{
-		Code:    code,
-		Message: err.Error(),
+	ctx.AbortWithStatusJSON(code, gin.H{
+		"error": ApiError{
+			Code:    code,
+			Message: err.Error(),
+		},
 	})
 }
