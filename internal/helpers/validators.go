@@ -16,7 +16,14 @@ var (
 	ErrExpiredCard             = errors.New("card expired")
 )
 
-func ValidateCardExpirationDate(month string, year string) error {
+const (
+	minMonth        = 1
+	maxMonth        = 12
+	maxNumberLength = 19
+	minNumberLength = 13
+)
+
+func ValidateCardExpirationDate(month, year string) error {
 	// check month length and if all digits
 	monthReg := regexp.MustCompile("^[0-9]{2}$")
 	if !monthReg.MatchString(month) {
@@ -29,7 +36,7 @@ func ValidateCardExpirationDate(month string, year string) error {
 	}
 
 	// check month value
-	if cardMonth < 1 || cardMonth > 12 {
+	if cardMonth < minMonth || cardMonth > maxMonth {
 		return ErrInvalidCardExpMonth
 	}
 
@@ -44,16 +51,11 @@ func ValidateCardExpirationDate(month string, year string) error {
 		return err
 	}
 
-	currentYear, currentMonthStr, _ := time.Now().Date()
-	currentMonth := int(currentMonthStr)
+	currentYear, currentMonth, _ := time.Now().Date()
 
 	// check if card expired
-	if cardYear < currentYear {
+	if cardYear < currentYear || (cardYear == currentYear && cardMonth < int(currentMonth)) {
 		return ErrExpiredCard
-	} else if cardYear == currentYear {
-		if cardMonth < currentMonth {
-			return ErrExpiredCard
-		}
 	}
 
 	return nil
@@ -61,7 +63,7 @@ func ValidateCardExpirationDate(month string, year string) error {
 
 func ValidateCardNumber(number string) error {
 	// check length
-	if len(number) < 13 || len(number) > 19 {
+	if len(number) < minNumberLength || len(number) > maxNumberLength {
 		return ErrInvalidCardNumberLength
 	}
 

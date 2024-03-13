@@ -10,7 +10,7 @@ import (
 func UseCards(group *gin.RouterGroup, cardsService services.Cards) {
 	cards := group.Group("cards")
 
-	cards.POST("validate", validateCard(cardsService))
+	cards.POST("validate", validateCardHandler(cardsService))
 }
 
 type ValidateCardResponse struct {
@@ -18,7 +18,7 @@ type ValidateCardResponse struct {
 	Error *ApiError `json:"error,omitempty"`
 }
 
-func validateCard(cardsService services.Cards) gin.HandlerFunc {
+func validateCardHandler(cardsService services.Cards) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		var input services.ValidateCardInput
 		if err := ctx.BindJSON(&input); err != nil {

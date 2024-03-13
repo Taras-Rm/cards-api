@@ -2,8 +2,7 @@ package services
 
 import "cards-api/internal/helpers"
 
-type cards struct {
-}
+type cards struct{}
 
 func NewCardsService() Cards {
 	return &cards{}
